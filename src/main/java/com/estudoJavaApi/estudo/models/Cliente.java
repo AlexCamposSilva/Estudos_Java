@@ -1,5 +1,6 @@
 package com.estudoJavaApi.estudo.models;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import jakarta.persistence.Entity;
@@ -9,13 +10,27 @@ import jakarta.persistence.Id;
 
 @Entity
 
-public class Cliente {
-
+public class Cliente implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 	private String name;
 	private String cpf;
+	
+	
+	
+	
+/*	public Cliente(String name, String cpf) {
+		super();
+		this.name = name;
+		this.cpf = cpf;
+	}*/
+	
+	
+	
+	
 	public UUID getId() {
 		return id;
 	}
