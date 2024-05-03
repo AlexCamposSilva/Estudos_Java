@@ -5,7 +5,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,13 +28,13 @@ public class ClienteController {
 	@GetMapping("/clientes")
 	private ResponseEntity<List<Cliente>> findAll(){
 		List<Cliente> ListCliente = clienteRepositories.findAll();
-		return ResponseEntity.ok().body(ListCliente);
+		return ResponseEntity.status(HttpStatus.OK).body(ListCliente);
 	}
 	
 	@GetMapping("/clientes/{id}")
 	private ResponseEntity<Cliente> findById(@PathVariable (value = "id") UUID id){
 		Optional<Cliente> obj = clienteRepositories.findById(id);
-		return ResponseEntity.ok().body(obj.get());
+		return ResponseEntity.status(HttpStatus.OK).body(obj.get());
 	}
 		
 	@PostMapping("/clientes")
@@ -41,7 +44,7 @@ public class ClienteController {
 		newCliente.setName(cliente.getName());
 		newCliente.setCpf(cliente.getCpf());
 		
-		return ResponseEntity.ok().body(clienteRepositories.save(newCliente));	
+		return ResponseEntity.status(HttpStatus.CREATED).body(clienteRepositories.save(newCliente));	
 	}
 
 
@@ -53,7 +56,16 @@ public class ClienteController {
 		newcliente.setName(cliente.getName());
 		newcliente.setCpf(cliente.getCpf());
 		
-		return ResponseEntity.ok().body(clienteRepositories.save(newcliente));
+		return ResponseEntity.status(HttpStatus.OK).body(clienteRepositories.save(newcliente));
+	}
+	
+	@DeleteMapping("/clientes/{id}")
+	private ResponseEntity<Cliente>deletar (@PathVariable(value ="id") UUID id){
+		Optional<Cliente> obj = clienteRepositories.findById(id);
+		clienteRepositories.delete(obj.get());
+		return ResponseEntity.status(HttpStatus.OK).body(null);
+		
+		
 	}
 
 }
